@@ -4,36 +4,27 @@ import "./TextAreaComponent.css"; // Import the CSS file for styling
 const TextAreaComponent = () => {
 	const [text, setText] = useState("");
 	const textAreaRef = useRef(null);
-	const [bold, setBold] = useState(false);
-	const [italic, setitalic] = useState(false);
-	const [underline, setUnderline] = useState(false);
+
 	const handleInput = () => {
-		setText(textAreaRef.current.innerHTML); // this text will be set using api key from backend
+		setText(textAreaRef.current.innerHTML); // This text will be set using an API key from the backend
 	};
 
-	const handleBold = () => {
-		setBold(!bold);
-	};
-
-	const handleItalic = () => {
-		setitalic(!italic);
-	};
-
-	const handleUnderline = () => {
-		setUnderline(!underline);
+	const applyFormatting = (command) => {
+		document.execCommand(command, false, null);
+		handleInput(); // Update state with new content
 	};
 
 	return (
 		<div className="container">
 			<h1 className="title">Google Docs Styled Text Area</h1>
 			<div className="toolbar">
-				<button onClick={handleBold}>
+				<button onClick={() => applyFormatting("bold")} title="Bold">
 					<b>B</b>
 				</button>
-				<button onClick={handleItalic}>
+				<button onClick={() => applyFormatting("italic")} title="Italic">
 					<i>I</i>
 				</button>
-				<button onClick={handleUnderline}>
+				<button onClick={() => applyFormatting("underline")} title="Underline">
 					<u>U</u>
 				</button>
 			</div>
