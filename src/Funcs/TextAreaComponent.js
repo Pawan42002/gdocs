@@ -1,30 +1,57 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./TextAreaComponent.css"; // Import the CSS file for styling
 
 const TextAreaComponent = () => {
-	const [text, setText] = useState("");
+	const [activeFormats, setActiveFormats] = useState({
+		bold: false,
+		italic: false,
+		underline: false,
+	});
 	const textAreaRef = useRef(null);
 
-	const handleInput = () => {
-		setText(textAreaRef.current.innerHTML); // This text will be set using an API key from the backend
-	};
-
 	const applyFormatting = (command) => {
-		document.execCommand(command, false, null);
-		handleInput(); // Update state with new content
+		if (command === "bold") {
+			setActiveFormats((prevState) => ({
+				...prevState,
+				bold: !prevState.bold,
+			}));
+		} else if (command === "italic") {
+			setActiveFormats((prevState) => ({
+				...prevState,
+				italic: !prevState.italic,
+			}));
+		} else if (command === "underline") {
+			setActiveFormats((prevState) => ({
+				...prevState,
+				underline: !prevState.underline,
+			}));
+		}
+		console.log(activeFormats);
 	};
 
 	return (
 		<div className="container">
 			<h1 className="title">Google Docs Styled Text Area</h1>
 			<div className="toolbar">
-				<button onClick={() => applyFormatting("bold")} title="Bold">
+				<button
+					onClick={() => applyFormatting("bold")}
+					className={activeFormats.bold ? "active" : ""}
+					title="Bold"
+				>
 					<b>B</b>
 				</button>
-				<button onClick={() => applyFormatting("italic")} title="Italic">
+				<button
+					onClick={() => applyFormatting("italic")}
+					className={activeFormats.italic ? "active" : ""}
+					title="Italic"
+				>
 					<i>I</i>
 				</button>
-				<button onClick={() => applyFormatting("underline")} title="Underline">
+				<button
+					onClick={() => applyFormatting("underline")}
+					className={activeFormats.underline ? "active" : ""}
+					title="Underline"
+				>
 					<u>U</u>
 				</button>
 			</div>
@@ -32,7 +59,7 @@ const TextAreaComponent = () => {
 				className="text-area"
 				contentEditable
 				ref={textAreaRef}
-				onInput={handleInput}
+				onInput={() => {}}
 				placeholder="Type your text here..."
 				suppressContentEditableWarning={true}
 			/>
